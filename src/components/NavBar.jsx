@@ -32,7 +32,7 @@ export function Navbar() {
             </Link>
             
             {/* Botão de Entrar */}
-            <Link to="/login" className="flex items-center gap-4 bg-purple-900/30 hover:bg-purple-800/50 text-purple-300 px-5 py-2.5 rounded-lg border border-purple-700/50 transition-all shadow-sm">
+            <Link to="/login" className="flex items-center gap-2 bg-purple-900/30 hover:bg-purple-800/50 text-purple-300 px-5 py-2.5 rounded-lg border border-purple-700/50 transition-all shadow-sm">
               <User className="w-5 h-5" />
               <span className="font-semibold">Entrar</span>
             </Link>
