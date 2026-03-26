@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Trash2, Edit, PlusCircle, ShieldAlert, Loader2, Sparkles, Package } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export function DashboardAdmin() {
   const [produtos, setProdutos] = useState([]);
@@ -47,10 +48,10 @@ export function DashboardAdmin() {
 
       // Se deu certo no Java, a gente remove o item da tela sem precisar dar F5!
       setProdutos(produtos.filter(produto => produto.id !== id));
-      alert('Relíquia banida com sucesso!');
+      toast.success('Relíquia banida com sucesso!');
 
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     }
   };
 

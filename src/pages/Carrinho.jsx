@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Trash2, ArrowLeft, ShoppingCart, Sparkles, Wand2 } from 'lucide-react';
 import { CartContext } from '../contexts/CartContext';
+import toast from 'react-hot-toast';
 
 export function Carrinho() {
   const { carrinho, removerDoCarrinho, atualizarQuantidade, limparCarrinho } = useContext(CartContext);
@@ -12,7 +13,7 @@ export function Carrinho() {
   // Função para simular o fechamento do pedido
   const handleFinalizarCompra = () => {
     if (carrinho.length === 0) return;
-    alert('✨ Magia realizada! Seu pedido foi conjurado com sucesso.');
+    toast.success('✨ Magia realizada! Seu pedido foi conjurado com sucesso.');
     limparCarrinho();
   };
 

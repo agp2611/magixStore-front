@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { PlusCircle, Tag, AlignLeft, DollarSign, Loader2, Sparkles, ArrowLeft, Image as ImageIcon, PackageSearch } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export function CadastroProduto() {
   const [nome, setNome] = useState('');
@@ -46,11 +47,11 @@ export function CadastroProduto() {
       });
 
       if (!response.ok) {
-        if (response.status === 403) throw new Error('Seu nível de magia (permissão) é muito baixo para isso. Verifique se você é ADMIN.');
-        throw new Error('Falha ao conjurar o item no banco de dados.');
+        if (response.status === 403) throw toast.error('Seu nível de magia (permissão) é muito baixo para isso. Verifique se você é ADMIN.');
+        throw toast.error('Falha ao conjurar o item no banco de dados.');
       }
 
-      alert('Relíquia forjada com sucesso e adicionada à vitrine!');
+      toast.success('Relíquia forjada com sucesso e adicionada à vitrine!');
       navigate('/produtos'); 
 
     } catch (error) {

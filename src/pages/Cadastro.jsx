@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Mail, Lock, UserPlus, Sparkles, User, ArrowLeft, Loader2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export function Cadastro() {
   const [nome, setNome] = useState('');
@@ -42,7 +43,7 @@ export function Cadastro() {
         throw new Error('Falha ao registrar iniciado. O e-mail já pode estar em uso.');
       }
       
-      alert("Iniciado cadastrado com sucesso! Bem-vindo a Magix.");
+      toast.success("Iniciado cadastrado com sucesso! Bem-vindo a Magix.");
       navigate('/login'); 
 
     } catch (error) {

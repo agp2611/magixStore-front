@@ -11,6 +11,7 @@ import { CadastroProduto } from './pages/CadastroProduto';
 import { DashboardAdmin } from './pages/DashboardAdmin';
 import { EditarProduto } from './pages/EditarProduto';
 import { Carrinho } from './pages/Carrinho';
+import { Toaster } from 'react-hot-toast';
 
 
 function App() {
@@ -19,6 +20,22 @@ function App() {
       <CartProvider>
         <BrowserRouter>
           <div className="min-h-screen bg-zinc-950 text-gray-200 font-sans">
+            <Toaster 
+              position="bottom-right"
+              toastOptions={{
+                style: {
+                  background: '#18181b', // zinc-900
+                  color: '#e4e4e7', // zinc-200
+                  border: '1px solid #581c87', // purple-900
+                },
+                success: {
+                  iconTheme: { primary: '#a855f7', secondary: '#fff' }, // purple-500
+                },
+                error: {
+                  iconTheme: { primary: '#ef4444', secondary: '#fff' }, // red-500
+                },
+              }}
+            />
             <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />

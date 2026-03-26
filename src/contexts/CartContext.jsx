@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 // Cria o canal de comunicação do carrinho
 export const CartContext = createContext();
@@ -30,7 +31,7 @@ export function CartProvider({ children }) {
       // Se não tem, adiciona com quantidade 1
       return [...carrinhoAtual, { ...produto, quantidade: 1 }];
     });
-    alert(`"${produto.name}" foi adicionado ao seu caldeirão!`);
+    toast.success(`"${produto.name}" foi adicionado ao seu caldeirão!`);
   };
 
   // Função para remover um item totalmente

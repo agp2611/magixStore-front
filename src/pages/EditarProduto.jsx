@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Edit, Tag, AlignLeft, DollarSign, Loader2, Sparkles, ArrowLeft, Image as ImageIcon, PackageSearch } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export function EditarProduto() {
   const { id } = useParams(); // Pega o ID da relíquia pela URL
@@ -75,7 +76,7 @@ export function EditarProduto() {
         throw new Error('Falha ao atualizar a relíquia no banco de dados.');
       }
 
-      alert('Relíquia transmutada com sucesso!');
+      toast.success('Relíquia transmutada com sucesso!');
       navigate('/admin/dashboard'); // Volta pro painel
 
     } catch (error) {
