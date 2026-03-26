@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Home } from './pages/Home';
 import { Produtos } from './pages/Produtos';
+import { Login } from './pages/Login'; 
 
 function App() {
   return (
@@ -10,10 +11,10 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<h2 className="text-center mt-20 text-2xl">Portal de Acesso em breve...</h2>} />
+          <Route path="/produtos" element={<Produtos />} />
           
-          {/* Colocamos o componente de Produtos na rota dele! */}
-          <Route path="/produtos" element={<Produtos />} /> 
+          {/* Colocamos o componente de Login na rota dele! */}
+          <Route path="/login" element={<Login />} />
           
           <Route path="/carrinho" element={<h2 className="text-center mt-20 text-2xl">Seu Caldeirão está vazio...</h2>} />
         </Routes>
