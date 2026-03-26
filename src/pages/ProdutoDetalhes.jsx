@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowLeft, Loader2, Sparkles, Package } from 'lucide-react';
+import { CartContext } from '../contexts/CartContext';
 
 export function ProdutoDetalhes() {
   const { id } = useParams(); // Pega o ID da URL
   const navigate = useNavigate();
-  
+  const { adicionarAoCarrinho } = useContext(CartContext);
   const [produto, setProduto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState(null);
+  
 
   useEffect(() => {
     // Busca apenas o produto com este ID específico
@@ -103,7 +105,9 @@ export function ProdutoDetalhes() {
               </span>
             </div>
 
-            <button className="w-full flex items-center justify-center gap-3 bg-purple-600 hover:bg-purple-500 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-[0_0_20px_rgba(147,51,234,0.3)] hover:shadow-[0_0_35px_rgba(147,51,234,0.5)] text-lg group">
+            <button 
+              onClick={() => adicionarAoCarrinho(produto)}
+              className="w-full flex items-center justify-center gap-3 bg-purple-600 hover:bg-purple-500 text-white font-bold py-4 px-8 rounded-xl transition-all shadow-[0_0_20px_rgba(147,51,234,0.3)] hover:shadow-[0_0_35px_rgba(147,51,234,0.5)] text-lg group">
               <ShoppingCart className="w-6 h-6 group-hover:scale-110 transition-transform" />
               Adicionar ao Caldeirão
             </button>

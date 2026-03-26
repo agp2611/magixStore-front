@@ -2,9 +2,12 @@ import { Link } from 'react-router-dom';
 import { ShoppingCart, User, Sparkles, LogOut, ShieldAlert } from 'lucide-react';
 import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
+import { CartContext } from '../contexts/CartContext';
 
 export function Navbar() {
   const { isLoggedIn, logout } = useContext(AuthContext);
+  const { carrinho } = useContext(CartContext);
+  const totalItens = carrinho.reduce((acc, item) => acc + item.quantidade, 0);
   return (
     <nav className="bg-zinc-950 border-b border-zinc-800 text-gray-200 sticky top-0 z-50 shadow-lg shadow-purple-900/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,12 +32,13 @@ export function Navbar() {
             <Link to="/carrinho" className="relative hover:text-purple-400 transition-colors">
               <ShoppingCart className="w-6 h-6" />
               {/* Bolinha indicadora de itens */}
-              <span className="absolute -top-2 -right-2 bg-purple-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                0
+              {totalItens > 0 && (
+              <span className="absolute -top-1 -right-1 bg-purple-600 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-zinc-950">
+                {totalItens}
               </span>
-            </Link>
+            )}
+          </Link>
             
-            {/* Se estiver logado mostra o menu do usuário, senão mostra o Entrar */}
             {/* Se estiver logado mostra o menu do usuário, senão mostra o Entrar */}
         {isLoggedIn ? (
           <div className="flex items-center gap-4">

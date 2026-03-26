@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Sparkles, Loader2 } from 'lucide-react';
+import { CartContext } from '../contexts/CartContext';
 
 export function Produtos() {
   const [produtos, setProdutos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState(null);
+  const { adicionarAoCarrinho } = useContext(CartContext);
 
   useEffect(() => {
     fetch('http://localhost:8081/products', {
@@ -93,7 +95,7 @@ export function Produtos() {
                 <button 
                   onClick={(e) => {
                     e.preventDefault();
-                    console.log("Adicionando ao caldeirão:", produto.name);
+                    adicionarAoCarrinho(produto);
                   }}
                   className="bg-purple-900/30 hover:bg-purple-600 text-purple-300 hover:text-white p-3 rounded-xl transition-all border border-purple-800/30 hover:border-purple-500 z-10 relative"
                 >
