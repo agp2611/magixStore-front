@@ -38,11 +38,10 @@ export function CadastroProduto() {
         },
         body: JSON.stringify({
           name: nome,
-          description: descricao,
+          description: descricao || null,
           price: parseFloat(preco),
-          // Adicionamos os dois campos novos aqui:
           stock: parseInt(estoque), 
-          imageUrl: imagemUrl // Atenção: Confirme se no seu Java (DTO) a letra 'U' é maiúscula mesmo!
+          imageUrl: imagemUrl || null
         }),
       });
 
@@ -157,7 +156,6 @@ export function CadastroProduto() {
               </div>
               <input
                 type="url"
-                required
                 value={imagemUrl}
                 onChange={(e) => setImagemUrl(e.target.value)}
                 className="block w-full pl-11 pr-4 py-3 bg-zinc-950 border border-zinc-800 rounded-xl text-gray-200 placeholder-zinc-600 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
@@ -174,7 +172,6 @@ export function CadastroProduto() {
                 <AlignLeft className="h-5 w-5 text-zinc-500" />
               </div>
               <textarea
-                required
                 rows="4"
                 value={descricao}
                 onChange={(e) => setDescricao(e.target.value)}
