@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowLeft, Loader2, Sparkles, Package } from 'lucide-react';
 
-
 export function ProdutoDetalhes() {
   const { id } = useParams(); // Pega o ID da URL
   const navigate = useNavigate();
@@ -58,21 +57,33 @@ export function ProdutoDetalhes() {
 
       <div className="bg-zinc-900/50 border border-zinc-800 rounded-3xl p-6 md:p-10 flex flex-col md:flex-row gap-10 items-start shadow-2xl relative overflow-hidden">
         
-        {/* Efeitos visuais de fundo */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-purple-900/10 blur-3xl rounded-full pointer-events-none"></div>
 
-        {/* Lado Esquerdo: Imagem (Placeholder) */}
-        <div className="w-full md:w-1/2 bg-zinc-950 border border-zinc-800/80 rounded-2xl aspect-square flex flex-col items-center justify-center relative group">
-          <div className="absolute inset-0 bg-gradient-to-tr from-purple-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-          <Sparkles className="w-20 h-20 text-zinc-800 mb-4 group-hover:text-purple-500/50 transition-colors duration-500" />
-          <p className="text-zinc-700 text-sm font-medium uppercase tracking-widest">Imagem Mágica</p>
+        {/* Lado Esquerdo: Imagem (Agora com suporte a imagem real ou placeholder) */}
+        <div className="w-full md:w-1/2 bg-zinc-950 border border-zinc-800/80 rounded-2xl aspect-square flex flex-col items-center justify-center relative group overflow-hidden">
+          {produto.imageUrl ? (
+            <img 
+              src={produto.imageUrl} 
+              alt={produto.name} 
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+          ) : (
+            <>
+              <Sparkles className="w-20 h-20 text-zinc-800 mb-4 group-hover:text-purple-500/50 transition-colors duration-500" />
+              <p className="text-zinc-700 text-sm font-medium uppercase tracking-widest">Imagem Oculta</p>
+            </>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-tr from-purple-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl pointer-events-none"></div>
         </div>
 
         {/* Lado Direito: Informações */}
-        <div className="w-full md:w-1/2 flex flex-col h-full">
+        <div className="w-full md:w-1/2 flex flex-col h-full z-10">
           <div className="flex items-center gap-2 mb-4">
             <span className="bg-purple-900/30 text-purple-300 text-xs font-bold px-3 py-1 rounded-full border border-purple-800/30">
               Relíquia Autêntica
+            </span>
+            <span className="bg-zinc-800/50 text-zinc-400 text-xs px-3 py-1 rounded-full border border-zinc-700/50">
+              Estoque: {produto.stock || 0}
             </span>
           </div>
           
@@ -80,14 +91,15 @@ export function ProdutoDetalhes() {
             {produto.name}
           </h1>
           
-          <p className="text-zinc-400 text-lg mb-8 leading-relaxed">
-            {produto.description}
+          {/* Lógica para quando a descrição for null ou vazia */}
+          <p className={`text-lg mb-8 leading-relaxed ${produto.description ? 'text-zinc-400' : 'text-zinc-600 italic'}`}>
+            {produto.description || "Esta relíquia ainda não possui uma descrição detalhada em nosso grimório."}
           </p>
 
           <div className="mt-auto border-t border-zinc-800/80 pt-8">
             <div className="flex items-end gap-4 mb-8">
               <span className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">
-                R$ {produto.price.toFixed(2)}
+                R$ {produto.price ? produto.price.toFixed(2) : '0.00'}
               </span>
             </div>
 
@@ -95,11 +107,6 @@ export function ProdutoDetalhes() {
               <ShoppingCart className="w-6 h-6 group-hover:scale-110 transition-transform" />
               Adicionar ao Caldeirão
             </button>
-            
-            <p className="text-center text-zinc-500 text-sm mt-4 flex items-center justify-center gap-2">
-              <Package className="w-4 h-4" />
-              Entrega via coruja em toda dimensão de Magix
-            </p>
           </div>
         </div>
       </div>
