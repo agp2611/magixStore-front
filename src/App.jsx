@@ -10,6 +10,7 @@ import { ProdutoDetalhes } from './pages/ProdutoDetalhes';
 import { CadastroProduto } from './pages/CadastroProduto';
 import { DashboardAdmin } from './pages/DashboardAdmin';
 import { EditarProduto } from './pages/EditarProduto';
+import { Carrinho } from './pages/Carrinho';
 
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
               <Route path="/admin/novo-produto" element={<CadastroProduto />} />
               <Route path="/login" element={<Login />} />
               <Route path="/cadastro" element={<Cadastro />} />
-              <Route path="/carrinho" element={<h2 className="text-center mt-20 text-2xl">Seu Caldeirão está vazio...</h2>} />
+              <Route path="/carrinho" element={<Carrinho />} />
               <Route path="/admin/dashboard" element={<DashboardAdmin />} />
               <Route path="/admin/editar-produto/:id" element={<EditarProduto />} />
             </Routes>
