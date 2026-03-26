@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Home } from './pages/Home';
 import { Produtos } from './pages/Produtos';
-import { Login } from './pages/Login'; 
+import { Login } from './pages/Login';
+import { Cadastro } from './pages/Cadastro';
 
 function App() {
   return (
@@ -12,9 +13,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/produtos" element={<Produtos />} />
-          
-          {/* Colocamos o componente de Login na rota dele! */}
           <Route path="/login" element={<Login />} />
+          
+          {/* Adicionamos a rota de Cadastro */}
+          <Route path="/cadastro" element={<Cadastro />} />
           
           <Route path="/carrinho" element={<h2 className="text-center mt-20 text-2xl">Seu Caldeirão está vazio...</h2>} />
         </Routes>
