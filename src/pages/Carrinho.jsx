@@ -1,22 +1,37 @@
-import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, ArrowLeft, ShoppingCart, Sparkles, Wand2 } from 'lucide-react';
-import { CartContext } from '../contexts/CartContext';
+import { CartContext } from '../contexts/CartContext'; // Verifique o caminho!
+import { AuthContext } from '../contexts/AuthContext'; // Verifique o caminho!
 import toast from 'react-hot-toast';
 
 export function Carrinho() {
-  const { carrinho, removerDoCarrinho, atualizarQuantidade, limparCarrinho } = useContext(CartContext);
+  const { carrinho, removerDoCarrinho, aumentarQuantidade, diminuirQuantidade, limparCarrinho } = useContext(CartContext);
+  const { isLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  // Calcula o valor total do caldeirão
+  // 🛡️ FEITIÇO DE PROTEÇÃO DA ROTA
+  useEffect(() => {
+    if (!isLoggedIn) {
+      toast.error("O caldeirão é restrito! Faça login para acessá-lo.", { icon: '🚫', id: 'carrinho-restrito' });
+      navigate('/login');
+    }
+  }, [isLoggedIn, navigate]);
+
+  // Se não estiver logado, retorna null para a tela não piscar o carrinho antes de redirecionar
+  if (!isLoggedIn) {
+    return null;
+  }
+
   const valorTotal = carrinho.reduce((acc, item) => acc + (item.price * item.quantidade), 0);
 
-  // Função para simular o fechamento do pedido
   const handleFinalizarCompra = () => {
     if (carrinho.length === 0) return;
     toast.success('✨ Magia realizada! Seu pedido foi conjurado com sucesso.');
     limparCarrinho();
   };
 
+  
   if (carrinho.length === 0) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center px-4">
@@ -60,13 +75,9 @@ export function Carrinho() {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
-        
-        {/* Lista de Itens (Esquerda) */}
         <div className="w-full lg:w-2/3 space-y-4">
           {carrinho.map((item) => (
             <div key={item.id} className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-6 shadow-lg group hover:border-purple-500/30 transition-colors">
-              
-              {/* Imagem do Produto no Carrinho */}
               <div className="w-24 h-24 sm:w-32 sm:h-32 bg-zinc-950 rounded-xl border border-zinc-800 flex-shrink-0 flex items-center justify-center overflow-hidden relative">
                 {item.imageUrl ? (
                   <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
@@ -75,9 +86,7 @@ export function Carrinho() {
                 )}
               </div>
 
-              {/* Detalhes e Controles */}
               <div className="flex-grow flex flex-col sm:flex-row justify-between w-full gap-4">
-                
                 <div className="flex flex-col justify-center text-center sm:text-left">
                   <h3 className="text-xl font-bold text-gray-200 group-hover:text-purple-400 transition-colors">{item.name}</h3>
                   <p className="text-zinc-500 text-sm mt-1 line-clamp-1">{item.description || 'Relíquia sem descrição'}</p>
@@ -87,27 +96,25 @@ export function Carrinho() {
                 </div>
 
                 <div className="flex items-center justify-between sm:justify-end gap-6 sm:gap-8 border-t sm:border-t-0 border-zinc-800 pt-4 sm:pt-0">
-                  
                   {/* Controle de Quantidade */}
                   <div className="flex items-center bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden">
-                    <button 
-                      onClick={() => atualizarQuantidade(item.id, item.quantidade - 1)}
-                      className="px-4 py-2 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
-                    >
-                      -
-                    </button>
-                    <span className="w-10 text-center text-gray-200 font-medium">
-                      {item.quantidade}
-                    </span>
-                    <button 
-                      onClick={() => atualizarQuantidade(item.id, item.quantidade + 1)}
-                      className="px-4 py-2 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
-                    >
-                      +
+                     <button 
+                        onClick={() => diminuirQuantidade(item.id)}
+                        className="px-4 py-2 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                     >
+                        -
+                     </button>
+                     <span className="w-10 text-center text-gray-200 font-medium">
+                        {item.quantidade}
+                     </span>
+                     <button 
+                        onClick={() => aumentarQuantidade(item.id)}
+                        className="px-4 py-2 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                     >
+                        +
                     </button>
                   </div>
 
-                  {/* Botão Remover */}
                   <button 
                     onClick={() => removerDoCarrinho(item.id)}
                     className="text-zinc-500 hover:text-red-400 p-2 hover:bg-red-900/20 rounded-lg transition-colors"
@@ -117,12 +124,10 @@ export function Carrinho() {
                   </button>
                 </div>
               </div>
-
             </div>
           ))}
         </div>
 
-        {/* Resumo do Pedido (Direita) */}
         <div className="w-full lg:w-1/3">
           <div className="bg-zinc-900/80 border border-zinc-800 rounded-3xl p-6 lg:p-8 shadow-2xl sticky top-28">
             <h2 className="text-xl font-bold text-gray-100 mb-6 border-b border-zinc-800 pb-4">Resumo do Feitiço</h2>
@@ -160,7 +165,6 @@ export function Carrinho() {
             </p>
           </div>
         </div>
-
       </div>
     </div>
   );
