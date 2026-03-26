@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { Mail, Lock, LogIn, Sparkles, Loader2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
 
 export function Login() {
+  const { login } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState('');
@@ -31,8 +34,7 @@ export function Login() {
 
       const data = await response.json();
       
-      
-      localStorage.setItem('magix_token', data.token); 
+      login(data.token); 
       
       navigate('/'); 
 

@@ -7,7 +7,7 @@ export function Home() {
       
       {/* Hero Section (Banner Principal) */}
       <section className="w-full max-w-7xl mx-auto px-4 py-24 flex flex-col items-center text-center">
-        <h1 className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-500 mb-6 drop-shadow-md pb-2">
+        <h1 className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-500 mb-6 drop-shadow-md pb-4">
           Desperte a Sua Magia
         </h1>
         <p className="text-zinc-400 text-lg md:text-xl max-w-2xl mb-10 leading-relaxed">

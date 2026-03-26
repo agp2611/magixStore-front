@@ -4,24 +4,24 @@ import { Home } from './pages/Home';
 import { Produtos } from './pages/Produtos';
 import { Login } from './pages/Login';
 import { Cadastro } from './pages/Cadastro';
+import { AuthProvider } from './contexts/AuthContext'; 
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="min-h-screen bg-zinc-950 text-gray-200 font-sans">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/produtos" element={<Produtos />} />
-          <Route path="/login" element={<Login />} />
-          
-          {/* Adicionamos a rota de Cadastro */}
-          <Route path="/cadastro" element={<Cadastro />} />
-          
-          <Route path="/carrinho" element={<h2 className="text-center mt-20 text-2xl">Seu Caldeirão está vazio...</h2>} />
-        </Routes>
-      </div>
-    </BrowserRouter>
+    <AuthProvider> 
+      <BrowserRouter>
+        <div className="min-h-screen bg-zinc-950 text-gray-200 font-sans">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/produtos" element={<Produtos />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/carrinho" element={<h2 className="text-center mt-20 text-2xl">Seu Caldeirão está vazio...</h2>} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
