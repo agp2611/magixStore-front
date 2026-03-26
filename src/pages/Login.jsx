@@ -1,22 +1,52 @@
 import { useState } from 'react';
-import { Mail, Lock, LogIn, Sparkles } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Mail, Lock, LogIn, Sparkles, Loader2 } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [erro, setErro] = useState('');
+  const [loading, setLoading] = useState(false);
+  
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Em breve, aqui faremos o POST para o Spring Boot!
-    console.log('Tentando logar com:', email, senha);
+    setErro('');
+    setLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:8081/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        
+        body: JSON.stringify({ email: email, password: senha }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Credenciais inválidas. O feitiço falhou.');
+      }
+
+      const data = await response.json();
+      
+      
+      localStorage.setItem('magix_token', data.token); 
+      
+      navigate('/'); 
+
+    } catch (error) {
+      setErro(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-20">
       <div className="w-full max-w-md bg-zinc-900/50 border border-zinc-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
         
-        {/* Efeito de brilho no fundo do card */}
         <div className="absolute -top-20 -right-20 w-40 h-40 bg-purple-600/20 blur-3xl rounded-full"></div>
         <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-indigo-600/20 blur-3xl rounded-full"></div>
 
@@ -29,8 +59,14 @@ export function Login() {
             <p className="text-zinc-400 text-sm mt-2">Entre com suas credenciais mágicas</p>
           </div>
 
+          {/* Mensagem de Erro */}
+          {erro && (
+            <div className="mb-6 p-3 bg-red-900/30 border border-red-800/50 rounded-xl text-red-400 text-sm text-center font-medium">
+              {erro}
+            </div>
+          )}
+
           <form onSubmit={handleLogin} className="space-y-5">
-            {/* Campo de Email */}
             <div>
               <label className="block text-sm font-medium text-zinc-400 mb-2 pl-1">E-mail</label>
               <div className="relative">
@@ -48,7 +84,6 @@ export function Login() {
               </div>
             </div>
 
-            {/* Campo de Senha */}
             <div>
               <label className="block text-sm font-medium text-zinc-400 mb-2 pl-1">Senha</label>
               <div className="relative">
@@ -66,13 +101,19 @@ export function Login() {
               </div>
             </div>
 
-            {/* Botão de Submit */}
             <button
               type="submit"
-              className="w-full flex justify-center items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:shadow-[0_0_25px_rgba(147,51,234,0.5)] mt-4"
+              disabled={loading}
+              className="w-full flex justify-center items-center gap-2 bg-purple-600 hover:bg-purple-500 disabled:bg-purple-800 disabled:cursor-not-allowed text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:shadow-[0_0_25px_rgba(147,51,234,0.5)] mt-4"
             >
-              <LogIn className="w-5 h-5" />
-              Acessar Grimório
+              {loading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <>
+                  <LogIn className="w-5 h-5" />
+                  Acessar Grimório
+                </>
+              )}
             </button>
           </form>
 

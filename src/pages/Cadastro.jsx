@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, Lock, UserPlus, Sparkles, User, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, UserPlus, Sparkles, User, ArrowLeft, Loader2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export function Cadastro() {
@@ -7,36 +7,60 @@ export function Cadastro() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
+
+  const [erro, setErro] = useState('');
+  const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
 
-  const handleCadastro = (e) => {
+  const handleCadastro = async (e) => {
     e.preventDefault();
+    setErro(''); 
     
     if (senha !== confirmarSenha) {
-      alert("As senhas não coincidem!");
+      setErro("As senhas não coincidem!");
       return;
     }
+
+    setLoading(true); 
     
-    // Aqui no futuro faremos o POST para a rota de registro do Spring Boot
-    console.log('Tentando cadastrar:', { nome, email, senha });
-    
-    // Simulação de sucesso e redirecionamento para o login
-    alert("Iniciado cadastrado com sucesso!");
-    navigate('/login');
+    try {
+      const response = await fetch('http://localhost:8081/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        
+        body: JSON.stringify({ 
+          name: nome, 
+          email: email, 
+          password: senha 
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Falha ao registrar iniciado. O e-mail já pode estar em uso.');
+      }
+      
+      alert("Iniciado cadastrado com sucesso! Bem-vindo a Magix.");
+      navigate('/login'); 
+
+    } catch (error) {
+      setErro(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md bg-zinc-900/50 border border-zinc-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
         
-        {/* Efeito de brilho no fundo do card */}
         <div className="absolute -top-20 -right-20 w-40 h-40 bg-fuchsia-600/20 blur-3xl rounded-full"></div>
         <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-purple-600/20 blur-3xl rounded-full"></div>
 
         <div className="relative z-10">
           
-          {/* Botão de Voltar */}
           <Link to="/login" className="inline-flex items-center gap-2 text-zinc-400 hover:text-purple-400 transition-colors mb-6 text-sm font-medium">
             <ArrowLeft className="w-4 h-4" />
             Voltar para o Login
@@ -50,8 +74,15 @@ export function Cadastro() {
             <p className="text-zinc-400 text-sm mt-2">Cadastre-se para acessar o grimório</p>
           </div>
 
+          {/* Caixa de Erro (Só aparece se o estado 'erro' tiver texto) */}
+          {erro && (
+            <div className="mb-6 p-3 bg-red-900/30 border border-red-800/50 rounded-xl text-red-400 text-sm text-center font-medium">
+              {erro}
+            </div>
+          )}
+
           <form onSubmit={handleCadastro} className="space-y-4">
-            {/* Campo de Nome */}
+            
             <div>
               <label className="block text-sm font-medium text-zinc-400 mb-1.5 pl-1">Nome Completo</label>
               <div className="relative">
@@ -69,7 +100,6 @@ export function Cadastro() {
               </div>
             </div>
 
-            {/* Campo de Email */}
             <div>
               <label className="block text-sm font-medium text-zinc-400 mb-1.5 pl-1">E-mail</label>
               <div className="relative">
@@ -87,7 +117,6 @@ export function Cadastro() {
               </div>
             </div>
 
-            {/* Campo de Senha */}
             <div>
               <label className="block text-sm font-medium text-zinc-400 mb-1.5 pl-1">Senha</label>
               <div className="relative">
@@ -105,7 +134,6 @@ export function Cadastro() {
               </div>
             </div>
 
-            {/* Campo de Confirmar Senha */}
             <div>
               <label className="block text-sm font-medium text-zinc-400 mb-1.5 pl-1">Confirmar Senha</label>
               <div className="relative">
@@ -123,13 +151,19 @@ export function Cadastro() {
               </div>
             </div>
 
-            {/* Botão de Submit */}
             <button
               type="submit"
-              className="w-full flex justify-center items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:shadow-[0_0_25px_rgba(147,51,234,0.5)] mt-6"
+              disabled={loading}
+              className="w-full flex justify-center items-center gap-2 bg-purple-600 hover:bg-purple-500 disabled:bg-purple-800 disabled:cursor-not-allowed text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:shadow-[0_0_25px_rgba(147,51,234,0.5)] mt-6"
             >
-              <Sparkles className="w-5 h-5" />
-              Conjurar Cadastro
+              {loading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <>
+                  <Sparkles className="w-5 h-5" />
+                  Conjurar Cadastro
+                </>
+              )}
             </button>
           </form>
 
