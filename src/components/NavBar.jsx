@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ShoppingCart, User, Sparkles, LogOut } from 'lucide-react';
+import { ShoppingCart, User, Sparkles, LogOut, PlusCircle } from 'lucide-react';
 import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 
@@ -35,21 +35,30 @@ export function Navbar() {
             </Link>
             
             {/* Se estiver logado mostra o menu do usuário, senão mostra o Entrar */}
-            {isLoggedIn ? (
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 text-zinc-300 hover:text-purple-400 cursor-pointer transition-colors">
-                  <User className="w-5 h-5" />
-                  <span className="font-medium">Iniciado</span>
-                </div>
-                <button 
-                  onClick={logout}
-                  className="flex items-center gap-2 bg-zinc-900 border border-zinc-800 hover:border-red-500/50 hover:bg-red-900/20 text-zinc-400 hover:text-red-400 px-4 py-2 rounded-xl transition-all"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Sair
-                </button>
-              </div>
-            ) : (
+            {/* Se estiver logado mostra o menu do usuário, senão mostra o Entrar */}
+        {isLoggedIn ? (
+          <div className="flex items-center gap-4">
+            
+            {/* BOTÃO NOVO: Atalho para o Painel Admin */}
+            <Link to="/admin/novo-produto" className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors text-sm font-medium bg-purple-900/20 px-3 py-1.5 rounded-lg border border-purple-800/30">
+              <PlusCircle className="w-4 h-4" />
+              Forja Mágica
+            </Link>
+
+            <div className="flex items-center gap-2 text-zinc-300 hover:text-purple-400 cursor-pointer transition-colors ml-2 border-l border-zinc-800 pl-4">
+              <User className="w-5 h-5" />
+              <span className="font-medium">Iniciado</span>
+            </div>
+            
+            <button 
+              onClick={logout}
+              className="flex items-center gap-2 bg-zinc-900 border border-zinc-800 hover:border-red-500/50 hover:bg-red-900/20 text-zinc-400 hover:text-red-400 px-4 py-2 rounded-xl transition-all"
+            >
+              <LogOut className="w-4 h-4" />
+              Sair
+            </button>
+          </div>
+        ) : (
               <Link to="/login" className="flex items-center gap-2 bg-zinc-900 border border-zinc-800 hover:border-purple-500/50 hover:bg-purple-900/30 text-gray-200 px-5 py-2.5 rounded-xl transition-colors shadow-sm hover:shadow-purple-900/20">
                 <User className="w-5 h-5 text-purple-400" />
                 <span className="font-medium">Entrar</span>

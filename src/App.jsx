@@ -6,6 +6,7 @@ import { Login } from './pages/Login';
 import { Cadastro } from './pages/Cadastro';
 import { AuthProvider } from './contexts/AuthContext'; 
 import { ProdutoDetalhes } from './pages/ProdutoDetalhes';
+import { CadastroProduto } from './pages/CadastroProduto';
 
 function App() {
   return (
@@ -16,10 +17,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/produtos" element={<Produtos />} />
-            
-            {/* Rota mágica que aceita qualquer ID */}
             <Route path="/produtos/:id" element={<ProdutoDetalhes />} />
-            
+            <Route path="/admin/novo-produto" element={<CadastroProduto />} />
             <Route path="/login" element={<Login />} />
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/carrinho" element={<h2 className="text-center mt-20 text-2xl">Seu Caldeirão está vazio...</h2>} />
