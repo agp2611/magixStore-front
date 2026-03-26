@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ShoppingCart, User, Sparkles, LogOut, PlusCircle } from 'lucide-react';
+import { ShoppingCart, User, Sparkles, LogOut, ShieldAlert } from 'lucide-react';
 import { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 
@@ -39,10 +39,10 @@ export function Navbar() {
         {isLoggedIn ? (
           <div className="flex items-center gap-4">
             
-            {/* BOTÃO NOVO: Atalho para o Painel Admin */}
-            <Link to="/admin/novo-produto" className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors text-sm font-medium bg-purple-900/20 px-3 py-1.5 rounded-lg border border-purple-800/30">
-              <PlusCircle className="w-4 h-4" />
-              Forja Mágica
+            {/* BOTÃO ATUALIZADO: Atalho para o Painel Admin */}
+            <Link to="/admin/dashboard" className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors text-sm font-medium bg-purple-900/20 px-3 py-1.5 rounded-lg border border-purple-800/30">
+              <ShieldAlert className="w-4 h-4" />
+              Painel Admin
             </Link>
 
             <div className="flex items-center gap-2 text-zinc-300 hover:text-purple-400 cursor-pointer transition-colors ml-2 border-l border-zinc-800 pl-4">
