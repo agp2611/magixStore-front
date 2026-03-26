@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ShoppingCart, Loader2, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export function Produtos() {
 
@@ -57,22 +58,37 @@ export function Produtos() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {/* Mapeia a lista de produtos que veio do Java e cria um card para cada um */}
+          {/* Mapeia a lista de produtos que veio do Java e cria um card para cada um */}
           {produtos.map((produto) => (
-            <div key={produto.id} className="bg-zinc-900/40 border border-zinc-800 rounded-2xl p-5 hover:border-purple-500/50 transition-all hover:-translate-y-1 shadow-lg hover:shadow-purple-900/20 flex flex-col group">
+            <div key={produto.id} className="bg-zinc-900/40 border border-zinc-800 rounded-2xl p-5 hover:border-purple-500/50 transition-all hover:-translate-y-1 shadow-lg hover:shadow-purple-900/20 flex flex-col group relative">
               
-              {/* Espaço para imagem futura */}
-              <div className="bg-zinc-950 rounded-xl h-48 mb-5 flex items-center justify-center border border-zinc-800/50 group-hover:border-purple-900/50 transition-colors">
-                <Sparkles className="w-10 h-10 text-zinc-800 group-hover:text-purple-900/50 transition-colors" />
-              </div>
+              {/* Transformamos a Imagem, Título e Descrição em um Link gigante */}
+              <Link to={`/produtos/${produto.id}`} className="flex flex-col flex-grow outline-none">
+                <div className="bg-zinc-950 rounded-xl h-48 mb-5 flex items-center justify-center border border-zinc-800/50 group-hover:border-purple-900/50 transition-colors">
+                  <Sparkles className="w-10 h-10 text-zinc-800 group-hover:text-purple-500 transition-colors" />
+                </div>
+                
+                <h2 className="text-xl font-bold text-gray-200 mb-2 line-clamp-1 group-hover:text-purple-400 transition-colors">
+                  {produto.name}
+                </h2>
+                
+                <p className="text-zinc-400 text-sm mb-5 line-clamp-2">
+                  {produto.description}
+                </p>
+              </Link>
               
-              <h2 className="text-xl font-bold text-gray-200 mb-2 line-clamp-1">{produto.name}</h2>
-              <p className="text-zinc-400 text-sm mb-5 line-clamp-2 flex-grow">{produto.description}</p>
-              
-              <div className="flex items-center justify-between mt-auto">
+              {/* O Preço e o Botão de Carrinho ficam fora do Link */}
+              <div className="flex items-center justify-between mt-auto pt-2">
                 <span className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">
                   R$ {produto.price.toFixed(2)}
                 </span>
-                <button className="bg-purple-900/30 hover:bg-purple-600 text-purple-300 hover:text-white p-3 rounded-xl transition-all border border-purple-800/30 hover:border-purple-500">
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault(); // Evita que clicar no carrinho abra a página do produto acidentalmente
+                    console.log("Adicionando ao caldeirão:", produto.name);
+                  }}
+                  className="bg-purple-900/30 hover:bg-purple-600 text-purple-300 hover:text-white p-3 rounded-xl transition-all border border-purple-800/30 hover:border-purple-500 z-10 relative"
+                >
                   <ShoppingCart className="w-5 h-5" />
                 </button>
               </div>
