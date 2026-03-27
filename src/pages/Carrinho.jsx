@@ -1,12 +1,13 @@
 import { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, ArrowLeft, ShoppingCart, Sparkles, Wand2 } from 'lucide-react';
-import { CartContext } from '../contexts/CartContext'; // Verifique o caminho!
-import { AuthContext } from '../contexts/AuthContext'; // Verifique o caminho!
+import { CartContext } from '../contexts/CartContext'; 
+import { AuthContext } from '../contexts/AuthContext'; 
 import toast from 'react-hot-toast';
 
 export function Carrinho() {
-  const { carrinho, removerDoCarrinho, aumentarQuantidade, diminuirQuantidade, limparCarrinho } = useContext(CartContext);
+  // 1. ADICIONAMOS finalizarCompra AQUI NA IMPORTAÇÃO DO CONTEXTO
+  const { carrinho, removerDoCarrinho, aumentarQuantidade, diminuirQuantidade, limparCarrinho, finalizarCompra } = useContext(CartContext);
   const { isLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -18,20 +19,14 @@ export function Carrinho() {
     }
   }, [isLoggedIn, navigate]);
 
-  // Se não estiver logado, retorna null para a tela não piscar o carrinho antes de redirecionar
   if (!isLoggedIn) {
     return null;
   }
 
   const valorTotal = carrinho.reduce((acc, item) => acc + (item.price * item.quantidade), 0);
 
-  const handleFinalizarCompra = () => {
-    if (carrinho.length === 0) return;
-    toast.success('✨ Magia realizada! Seu pedido foi conjurado com sucesso.');
-    limparCarrinho();
-  };
+  // NOTA: O "handleFinalizarCompra" antigo (fake) foi deletado daqui!
 
-  
   if (carrinho.length === 0) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center px-4">
@@ -64,14 +59,25 @@ export function Carrinho() {
         Continuar Explorando
       </Link>
 
-      <div className="flex items-center gap-4 mb-8">
-        <div className="bg-purple-900/30 p-3 rounded-2xl border border-purple-800/50">
-          <ShoppingCart className="w-8 h-8 text-purple-400" />
+      {/* 2. ESTE É O NOVO CABEÇALHO! ELE AGORA TEM O BOTÃO DE ESVAZIAR NA DIREITA */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8">
+        <div className="flex items-center gap-4">
+          <div className="bg-purple-900/30 p-3 rounded-2xl border border-purple-800/50">
+            <ShoppingCart className="w-8 h-8 text-purple-400" />
+          </div>
+          <div>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-100">Seu Caldeirão</h1>
+            <p className="text-zinc-400 mt-1">Revise as relíquias antes de conjurar o feitiço final</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-100">Seu Caldeirão</h1>
-          <p className="text-zinc-400 mt-1">Revise as relíquias antes de conjurar o feitiço final</p>
-        </div>
+
+        <button 
+          onClick={limparCarrinho}
+          className="flex items-center gap-2 text-zinc-500 hover:text-red-400 transition-colors text-sm font-medium py-2 px-4 rounded-lg hover:bg-red-900/20 border border-transparent hover:border-red-900/50"
+        >
+          <Trash2 className="w-4 h-4" />
+          Esvaziar Caldeirão
+        </button>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
@@ -96,7 +102,6 @@ export function Carrinho() {
                 </div>
 
                 <div className="flex items-center justify-between sm:justify-end gap-6 sm:gap-8 border-t sm:border-t-0 border-zinc-800 pt-4 sm:pt-0">
-                  {/* Controle de Quantidade */}
                   <div className="flex items-center bg-zinc-950 border border-zinc-800 rounded-lg overflow-hidden">
                      <button 
                         onClick={() => diminuirQuantidade(item.id)}
@@ -152,8 +157,9 @@ export function Carrinho() {
               </div>
             </div>
 
+            {/* 3. AQUI O BOTÃO DE FINALIZAR CHAMA A FUNÇÃO REAL DO CONTEXTO */}
             <button 
-              onClick={handleFinalizarCompra}
+              onClick={finalizarCompra}
               className="w-full flex justify-center items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white font-bold py-4 px-4 rounded-xl transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:shadow-[0_0_25px_rgba(147,51,234,0.5)] text-lg"
             >
               <Sparkles className="w-5 h-5" />

@@ -128,6 +128,34 @@ export function CartProvider({ children }) {
     }
   };
 
+  const finalizarCompra = async () => {
+    if (carrinho.length === 0 || !userId) return;
+    
+    try {
+      // Bate no Java para transformar o carrinho atual em um Pedido (Order)
+      const response = await fetch(`http://localhost:8081/orders/checkout/${userId}`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (!response.ok) {
+        if (response.status === 404) {
+           throw new Error("A rota de checkout não foi encontrada no Java (Erro 404).");
+        }
+        throw new Error("Os espíritos do servidor negaram seu pedido (Erro 500).");
+      }
+      
+      toast.success('✨ Magia realizada! Seu pedido foi conjurado.');
+      
+      // O Spring esvaziou o carrinho no banco ao criar o pedido.
+      // Então chamamos carregarCarrinho para o Front-end ficar vazio também!
+      await carregarCarrinho(); 
+      
+    } catch (error) {
+      toast.error(`Falha no feitiço: ${error.message}`);
+    }
+  };
+
   return (
     <CartContext.Provider 
       value={{ 
@@ -137,7 +165,8 @@ export function CartProvider({ children }) {
         removerDoCarrinho, 
         aumentarQuantidade, 
         diminuirQuantidade, 
-        limparCarrinho 
+        limparCarrinho,
+        finalizarCompra 
       }}>
       {children}
     </CartContext.Provider>
