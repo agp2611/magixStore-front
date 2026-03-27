@@ -23,11 +23,20 @@ export function Navbar() {
             <span>Magix</span>
           </Link>
 
-          {/* Links Centrais */}
-          {/* ✨ ALTERAÇÃO 2: Fixado no centro com absolute left-1/2 e -translate-x-1/2 */}
-          <div className="hidden md:flex space-x-8 absolute left-1/2 transform -translate-x-1/2 w-max">
-            <Link to="/" className="hover:text-purple-400 font-medium transition-colors">A Loja</Link>
-            <Link to="/produtos" className="hover:text-purple-400 font-medium transition-colors">Grimório de Produtos</Link>
+          {/* Links Centrais Mágicos */}
+          <div className="hidden md:flex items-center space-x-1 absolute left-1/2 transform -translate-x-1/2 w-max bg-zinc-900/40 p-1.5 rounded-2xl border border-zinc-800/60 backdrop-blur-md shadow-inner">
+            <Link 
+              to="/" 
+              className="px-5 py-2 rounded-xl text-zinc-300 hover:text-purple-200 hover:bg-purple-600/20 hover:shadow-[0_0_15px_rgba(147,51,234,0.2)] transition-all duration-300 font-medium text-sm"
+            >
+              Home
+            </Link>
+            <Link 
+              to="/produtos" 
+              className="px-5 py-2 rounded-xl text-zinc-300 hover:text-purple-200 hover:bg-purple-600/20 hover:shadow-[0_0_15px_rgba(147,51,234,0.2)] transition-all duration-300 font-medium text-sm"
+            >
+              Grimório de Produtos
+            </Link>
           </div>
 
           {/* Ícones da Direita (Carrinho e Login) */}
