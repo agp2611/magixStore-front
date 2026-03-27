@@ -52,12 +52,12 @@ export function Navbar() {
               )}
 
             {/* ✨ NOME DO USUÁRIO DINÂMICO */}
-            <div className="flex items-center gap-2 text-zinc-300 hover:text-purple-400 cursor-pointer transition-colors ml-2 border-l border-zinc-800 pl-4">
+            <Link to="/perfil" className="flex items-center gap-2 text-zinc-300 hover:text-purple-400 cursor-pointer transition-colors ml-2 border-l border-zinc-800 pl-4">
               <User className="w-5 h-5" />
-              <span className="font-medium max-w-[120px] truncate" title={userName}>
-                {userName}
+              <span className="font-medium max-w-[150px] truncate" title={userName || 'Iniciado'}>
+                {userName || 'Iniciado'}
               </span>
-            </div>
+            </Link>
             
             <button 
               onClick={logout}

@@ -13,6 +13,7 @@ import { EditarProduto } from './pages/EditarProduto';
 import { Carrinho } from './pages/Carrinho';
 import { Toaster } from 'react-hot-toast';
 import { AdminRoute } from './components/AdminRoute';
+import { Perfil } from './pages/Perfil';
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/cadastro" element={<Cadastro />} />
               <Route path="/carrinho" element={<Carrinho />} />
+              <Route path="/perfil" element={<Perfil />} /> 
               
               {/* 🛡️ ROTAS PROTEGIDAS PELA MAGIA DE ADMIN */}
               <Route path="/admin/dashboard" element={
