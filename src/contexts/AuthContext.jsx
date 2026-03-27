@@ -5,24 +5,31 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState(null);
-  const [userId, setUserId] = useState(null); // Agora teremos o ID de volta!
+  const [userId, setUserId] = useState(null);
+  const [userRole, setUserRole] = useState(null);
+  const [userName, setUserName] = useState(''); // ✨ NOVO ESTADO PARA A PERMISSÃO
 
   const decodificarESalvarToken = (jwtToken) => {
     try {
       const payloadBase64 = jwtToken.split('.')[1];
       const payloadDecodificado = JSON.parse(atob(payloadBase64));
 
-      // Agora temos certeza que o Java está mandando o 'id' aqui dentro!
       const idDoUsuario = payloadDecodificado.id; 
+      const roleDoUsuario = payloadDecodificado.role; 
+      const nomeDoUsuario = payloadDecodificado.name || payloadDecodificado.sub || 'Iniciado';
 
       setToken(jwtToken);
       setUserId(idDoUsuario);
+      setUserRole(roleDoUsuario); 
+      setUserName(nomeDoUsuario); // ✨ SALVANDO O NOME
       setIsLoggedIn(true);
     } catch (error) {
       console.error("Erro ao decodificar o token:", error);
       logout();
     }
   };
+
+      
 
   useEffect(() => {
     const storedToken = localStorage.getItem('magix_token');
@@ -40,11 +47,14 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('magix_token');
     setToken(null);
     setUserId(null);
+    setUserRole(null); 
+    setUserName(''); // ✨ LIMPA AO SAIR
     setIsLoggedIn(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, token, userId, login, logout }}>
+    // ✨ Exportando o userRole no value!
+    <AuthContext.Provider value={{ isLoggedIn, token, userId, userRole, userName, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

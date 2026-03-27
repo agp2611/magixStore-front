@@ -12,6 +12,7 @@ import { DashboardAdmin } from './pages/DashboardAdmin';
 import { EditarProduto } from './pages/EditarProduto';
 import { Carrinho } from './pages/Carrinho';
 import { Toaster } from 'react-hot-toast';
+import { AdminRoute } from './components/AdminRoute';
 
 
 function App() {
@@ -41,12 +42,28 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/produtos" element={<Produtos />} />
               <Route path="/produtos/:id" element={<ProdutoDetalhes />} />
-              <Route path="/admin/novo-produto" element={<CadastroProduto />} />
               <Route path="/login" element={<Login />} />
               <Route path="/cadastro" element={<Cadastro />} />
               <Route path="/carrinho" element={<Carrinho />} />
-              <Route path="/admin/dashboard" element={<DashboardAdmin />} />
-              <Route path="/admin/editar-produto/:id" element={<EditarProduto />} />
+              
+              {/* 🛡️ ROTAS PROTEGIDAS PELA MAGIA DE ADMIN */}
+              <Route path="/admin/dashboard" element={
+                <AdminRoute>
+                  <DashboardAdmin />
+                </AdminRoute>
+              } />
+              
+              <Route path="/admin/novo-produto" element={
+                <AdminRoute>
+                  <CadastroProduto />
+                </AdminRoute>
+              } />
+              
+              <Route path="/admin/editar-produto/:id" element={
+                <AdminRoute>
+                  <EditarProduto />
+                </AdminRoute>
+              } />
             </Routes>
           </div>
         </BrowserRouter>

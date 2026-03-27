@@ -5,7 +5,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import { CartContext } from '../contexts/CartContext';
 
 export function Navbar() {
-  const { isLoggedIn, logout } = useContext(AuthContext);
+  const { isLoggedIn, userRole, userName, logout } = useContext(AuthContext);
   const { carrinho } = useContext(CartContext);
   const totalItens = carrinho.reduce((acc, item) => acc + item.quantidade, 0);
   return (
@@ -40,18 +40,23 @@ export function Navbar() {
           </Link>
             
             {/* Se estiver logado mostra o menu do usuário, senão mostra o Entrar */}
-        {isLoggedIn ? (
-          <div className="flex items-center gap-4">
-            
-            {/* BOTÃO ATUALIZADO: Atalho para o Painel Admin */}
-            <Link to="/admin/dashboard" className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors text-sm font-medium bg-purple-900/20 px-3 py-1.5 rounded-lg border border-purple-800/30">
-              <ShieldAlert className="w-4 h-4" />
-              Painel Admin
-            </Link>
+          {isLoggedIn ? (
+            <div className="flex items-center gap-4">
+    
+              {/* 🛡️ FEITIÇO DE OCULTAÇÃO: Só renderiza se for ADMIN */}
+              {userRole === 'ROLE_ADMIN' && (
+                <Link to="/admin/dashboard" className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors text-sm font-medium bg-purple-900/20 px-3 py-1.5 rounded-lg border border-purple-800/30">
+                  <ShieldAlert className="w-4 h-4" />
+                  Painel Admin
+                </Link>
+              )}
 
+            {/* ✨ NOME DO USUÁRIO DINÂMICO */}
             <div className="flex items-center gap-2 text-zinc-300 hover:text-purple-400 cursor-pointer transition-colors ml-2 border-l border-zinc-800 pl-4">
               <User className="w-5 h-5" />
-              <span className="font-medium">Iniciado</span>
+              <span className="font-medium max-w-[120px] truncate" title={userName}>
+                {userName}
+              </span>
             </div>
             
             <button 
