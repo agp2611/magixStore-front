@@ -8,18 +8,19 @@ export function CartProvider({ children }) {
   const [carrinho, setCarrinho] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   
-  const { isLoggedIn, token } = useContext(AuthContext);
+  // Pegamos o userId decodificado lá do AuthContext!
+  const { isLoggedIn, token, userId } = useContext(AuthContext);
 
-  // 1. FUNÇÃO PARA BUSCAR O CARRINHO DO BANCO DE DADOS
   const carregarCarrinho = useCallback(async () => {
-    if (!isLoggedIn || !token) {
-      setCarrinho([]); // Limpa se deslogar
+    if (!isLoggedIn || !token || !userId) {
+      setCarrinho([]); 
       return;
     }
     
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:8081/cart', {
+      // URL com o ID do cliente
+      const response = await fetch(`http://localhost:8081/cart/${userId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
@@ -27,11 +28,10 @@ export function CartProvider({ children }) {
       
       const cartData = await response.json();
       
-      // Mapeia os dados do Spring para o formato que o Front espera
       if (cartData && cartData.items) {
           const itensMapeados = cartData.items.map(item => ({
-              id: item.id, // ID único do item no carrinho (CartItem ID)
-              productId: item.product.id, // ID real do produto
+              id: item.id, 
+              productId: item.product.id,
               name: item.product.name,
               price: item.product.price,
               imageUrl: item.product.imageUrl,
@@ -46,57 +46,48 @@ export function CartProvider({ children }) {
     } finally {
       setIsLoading(false);
     }
-  }, [isLoggedIn, token]);
+  }, [isLoggedIn, token, userId]);
 
-  // Carrega sempre que o usuário logar/deslogar
   useEffect(() => {
     carregarCarrinho();
   }, [carregarCarrinho]);
 
-  // 2. FUNÇÃO PARA ADICIONAR (Valida Estoque via API)
   const adicionarAoCarrinho = async (produto) => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn || !userId) {
       toast.error('O caldeirão está trancado! Faça login para adicionar itens.', { id: 'erro-login' });
       return;
     }
 
-    console.log("Token que está sendo enviado:", token);
     try {
-      const response = await fetch(`http://localhost:8081/cart/add/${produto.id}`, {
+      // Rota com userId e productId
+      const response = await fetch(`http://localhost:8081/cart/${userId}/add/${produto.id}`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
-      if (!response.ok) {
-        // Se o Java retornou erro (ex: sem estoque), lançamos para o catch
-        throw new Error('Produto sem estoque suficiente ou erro na magia.');
-      }
+      if (!response.ok) throw new Error('Produto sem estoque suficiente ou erro na magia.');
       
-      await carregarCarrinho(); // Sincroniza com o banco
+      await carregarCarrinho();
       toast.success(`"${produto.name}" adicionado ao caldeirão!`);
 
     } catch (error) {
-       toast.error(error.message || "Erro ao contatar os espíritos do banco de dados.");
+       toast.error(error.message);
     }
   };
 
-  // 3. FUNÇÃO PARA AUMENTAR (+1)
   const aumentarQuantidade = async (cartItemId) => {
     try {
       const response = await fetch(`http://localhost:8081/cart/increase/${cartItemId}`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      
       if (!response.ok) throw new Error('Limite de estoque atingido!');
       await carregarCarrinho();
-      
     } catch (error) {
       toast.error(error.message);
     }
   };
 
-  // 4. FUNÇÃO PARA DIMINUIR (-1)
   const diminuirQuantidade = async (cartItemId) => {
     try {
       const response = await fetch(`http://localhost:8081/cart/decrease/${cartItemId}`, {
@@ -109,7 +100,6 @@ export function CartProvider({ children }) {
     }
   };
 
-  // 5. FUNÇÃO PARA REMOVER A LINHA TODA
   const removerDoCarrinho = async (cartItemId) => {
     try {
       const response = await fetch(`http://localhost:8081/cart/item/${cartItemId}`, {
@@ -125,10 +115,10 @@ export function CartProvider({ children }) {
     }
   };
 
-  // 6. FUNÇÃO PARA LIMPAR TUDO
   const limparCarrinho = async () => {
     try {
-      const response = await fetch(`http://localhost:8081/cart/clear`, {
+      // URL com o ID do cliente
+      const response = await fetch(`http://localhost:8081/cart/clear/${userId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
