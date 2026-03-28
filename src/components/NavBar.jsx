@@ -20,7 +20,7 @@ export function Navbar() {
           {/* ✨ Adicionado z-10 para o logo não perder o clique devido ao centro absoluto */}
           <Link to="/" className="flex items-center gap-2 text-2xl font-bold text-purple-500 hover:text-purple-400 transition-colors z-10">
             <Sparkles className="w-7 h-7" />
-            <span>Magix</span>
+            <span>MagixStore</span>
           </Link>
 
           {/* Links Centrais Mágicos */}

@@ -2,12 +2,28 @@ import { Link } from 'react-router-dom';
 import { Sparkles, ArrowRight, FlaskConical, Wand2, BookOpen } from 'lucide-react';
 
 export function Home() {
+  const imagemDeFundo = 'https://plus.unsplash.com/premium_photo-1692745873484-89b063770f50?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+
   return (
-    <div className="flex flex-col items-center w-full">
+    <div className="relative min-h-screen w-full bg-zinc-950 overflow-hidden">
       
+      {/* ✨ CAMADA 2: A Imagem de Fundo (Com Position Absolute) */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center z-0 opacity-25" // Opacity-15 deixa a imagem bem sutil!
+        style={{ backgroundImage: `url(${imagemDeFundo})` }}
+      />
+
+      {/* ✨ CAMADA 3: O Gradiente de Sobreposição (Overlay) */}
+      {/* Isso garante que o texto fique legível e cria um clima mágico escuro */}
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-zinc-950 via-zinc-950/90 to-purple-950/30" />
+
+      {/* ✨ CAMADA 4: O Seu Conteúdo Real (Título, Botões, etc) */}
+      {/* É fundamental ter o z-20 para ficar por cima de todas as camadas de fundo */}
+      <div className="relative z-20 max-w-7xl mx-auto px-6 py-1 text-center">
+
       {/* Hero Section (Banner Principal) */}
       <section className="w-full max-w-7xl mx-auto px-4 py-24 flex flex-col items-center text-center">
-        <h1 className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-500 mb-6 drop-shadow-md pb-4">
+        <h1 className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600 mb-6 drop-shadow-md pb-4">
           Desperte a Sua Magia
         </h1>
         <p className="text-zinc-400 text-lg md:text-xl max-w-2xl mb-10 leading-relaxed">
@@ -24,8 +40,8 @@ export function Home() {
       </section>
 
       {/* Seção de Destaques (Cards de Categoria) */}
-      <section className="w-full max-w-7xl mx-auto px-4 py-16">
-        <h2 className="text-2xl font-bold text-gray-200 mb-8 text-center">Relíquias Mais Procuradas</h2>
+      <section className="w-full max-w-7xl mx-auto px-4 py-25">
+        <h2 className="text-2xl font-bold text-gray-200 mb-10 text-center">Relíquias Mais Procuradas</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Card 1 */}
@@ -56,7 +72,7 @@ export function Home() {
           </div>
         </div>
       </section>
-
+      </div>
     </div>
   );
 }
