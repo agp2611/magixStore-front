@@ -73,14 +73,14 @@ export function Perfil() {
         </div>
       ) : (
         <div className="space-y-6">
-          {pedidos.map((pedido) => (
+          {pedidos.map((pedido, index) => (
             <div key={pedido.id} className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-lg hover:border-purple-500/30 transition-colors">
               
               {/* Cabeçalho do Pedido */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 border-b border-zinc-800/50 pb-4">
                 <div>
                   <h3 className="text-lg font-bold text-purple-400 flex items-center gap-2">
-                    Pedido #{pedido.id}
+                    Pedido #{index + 1}
                   </h3>
                   <div className="flex items-center gap-2 text-zinc-500 text-sm mt-1">
                     <Clock className="w-4 h-4" />

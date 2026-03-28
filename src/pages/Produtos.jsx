@@ -55,7 +55,7 @@ export function Produtos() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       <div className="flex items-center gap-3 mb-10">
-        <Sparkles className="w-8 h-8 text-purple-500" />
+        <Sparkles className="w-8 h-8 text-gray-100" />
         <h1 className="text-4xl font-extrabold text-gray-100 tracking-tight">Vitrine Mágica</h1>
       </div>
 
