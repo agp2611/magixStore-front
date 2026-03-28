@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Sparkles, Loader2 } from 'lucide-react';
+import { ShoppingCart, Sparkles, Loader2, Search } from 'lucide-react';
 import { CartContext } from '../contexts/CartContext';
 
 export function Produtos() {
@@ -8,6 +8,10 @@ export function Produtos() {
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState(null);
   const { adicionarAoCarrinho } = useContext(CartContext);
+  const [termoBusca, setTermoBusca] = useState('');
+  const produtosFiltrados = produtos.filter(produto => 
+    produto.name.toLowerCase().includes(termoBusca.toLowerCase())
+  );
 
   useEffect(() => {
     fetch('http://localhost:8081/products', {
@@ -55,11 +59,27 @@ export function Produtos() {
         <h1 className="text-4xl font-extrabold text-gray-100 tracking-tight">Vitrine Mágica</h1>
       </div>
 
-      {produtos.length === 0 ? (
+      {/* ✨ BARRA DE PESQUISA */}
+      <div className="flex flex-row justify-between items-center w-full mb-8 gap-4">
+        <div className="relative w-full md:w-full">
+          <div className="absolute z-10 inset-y-0 left-0 pl-4 flex items-center">
+            <Search className="h-5 w-5 text-zinc-500" />
+          </div>
+          <input
+            type="text"
+            placeholder="Busque por relíquias, artefatos..."
+            value={termoBusca}
+            onChange={(e) => setTermoBusca(e.target.value)}
+            className="w-full bg-zinc-900/50 border border-zinc-800 text-zinc-200 rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all placeholder:text-zinc-600 shadow-inner backdrop-blur-sm"
+          />
+        </div>
+      </div>
+
+      {produtosFiltrados.length === 0 ? (
         <p className="text-zinc-400 text-lg text-center mt-10">O grimório está vazio no momento. Nenhuma relíquia encontrada.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {produtos.map((produto) => (
+          {produtosFiltrados.map((produto) => (
             <div key={produto.id} className="bg-zinc-900/40 border border-zinc-800 rounded-2xl p-5 hover:border-purple-500/50 transition-all hover:-translate-y-1 shadow-lg hover:shadow-purple-900/20 flex flex-col group relative">
               
               <Link to={`/produtos/${produto.id}`} className="flex flex-col flex-grow outline-none">
