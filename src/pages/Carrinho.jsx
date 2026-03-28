@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Trash2, ArrowLeft, ShoppingCart, Sparkles, Wand2 } from 'lucide-react';
+import { Trash2, ArrowLeft, ShoppingCart, Sparkles, Wand2, Plus, Minus } from 'lucide-react';
 import { CartContext } from '../contexts/CartContext'; 
 import { AuthContext } from '../contexts/AuthContext'; 
 import toast from 'react-hot-toast';
@@ -11,7 +11,7 @@ export function Carrinho() {
   const { isLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // 🛡️ FEITIÇO DE PROTEÇÃO DA ROTA
+  // FEITIÇO DE PROTEÇÃO DA ROTA
   useEffect(() => {
     if (!isLoggedIn) {
       toast.error("O caldeirão é restrito! Faça login para acessá-lo.", { icon: '🚫', id: 'carrinho-restrito' });
@@ -59,7 +59,7 @@ export function Carrinho() {
         Continuar Explorando
       </Link>
 
-      {/* 2. ESTE É O NOVO CABEÇALHO! ELE AGORA TEM O BOTÃO DE ESVAZIAR NA DIREITA */}
+     
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8">
         <div className="flex items-center gap-4">
           <div className="bg-purple-900/30 p-3 rounded-2xl border border-purple-800/50">
@@ -107,7 +107,7 @@ export function Carrinho() {
                         onClick={() => diminuirQuantidade(item.id)}
                         className="px-4 py-2 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
                      >
-                        -
+                        <Minus className="w-4 h-4" />
                      </button>
                      <span className="w-10 text-center text-gray-200 font-medium">
                         {item.quantidade}
@@ -116,7 +116,7 @@ export function Carrinho() {
                         onClick={() => aumentarQuantidade(item.id)}
                         className="px-4 py-2 text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
                      >
-                        +
+                        <Plus className="w-4 h-4" />
                     </button>
                   </div>
 
@@ -157,7 +157,7 @@ export function Carrinho() {
               </div>
             </div>
 
-            {/* 3. AQUI O BOTÃO DE FINALIZAR CHAMA A FUNÇÃO REAL DO CONTEXTO */}
+            
             <button 
               onClick={finalizarCompra}
               className="w-full flex justify-center items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white font-bold py-4 px-4 rounded-xl transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:shadow-[0_0_25px_rgba(147,51,234,0.5)] text-lg"

@@ -147,8 +147,6 @@ export function CartProvider({ children }) {
       
       toast.success('✨ Magia realizada! Seu pedido foi conjurado.');
       
-      // O Spring esvaziou o carrinho no banco ao criar o pedido.
-      // Então chamamos carregarCarrinho para o Front-end ficar vazio também!
       await carregarCarrinho(); 
       
     } catch (error) {

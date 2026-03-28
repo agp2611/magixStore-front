@@ -7,7 +7,7 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
   const [userRole, setUserRole] = useState(null);
-  const [userName, setUserName] = useState(''); // ✨ NOVO ESTADO PARA A PERMISSÃO
+  const [userName, setUserName] = useState('');
 
   const decodificarESalvarToken = (jwtToken) => {
     try {
@@ -21,7 +21,7 @@ export function AuthProvider({ children }) {
       setToken(jwtToken);
       setUserId(idDoUsuario);
       setUserRole(roleDoUsuario); 
-      setUserName(nomeDoUsuario); // ✨ SALVANDO O NOME
+      setUserName(nomeDoUsuario);
       setIsLoggedIn(true);
     } catch (error) {
       console.error("Erro ao decodificar o token:", error);
@@ -48,12 +48,12 @@ export function AuthProvider({ children }) {
     setToken(null);
     setUserId(null);
     setUserRole(null); 
-    setUserName(''); // ✨ LIMPA AO SAIR
+    setUserName('');
     setIsLoggedIn(false);
   };
 
   return (
-    // ✨ Exportando o userRole no value!
+    // Exportando o userRole no value!
     <AuthContext.Provider value={{ isLoggedIn, token, userId, userRole, userName, login, logout }}>
       {children}
     </AuthContext.Provider>

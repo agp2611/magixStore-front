@@ -10,10 +10,10 @@ export function AdminRoute({ children }) {
     return <Navigate to="/login" />;
   }
 
-  // Se estiver logado, mas NÃO for ADMIN, ele toma um block
+  // Se estiver logado, mas NÃO for ADMIN, bloqueia o acesso e mostra um aviso
   if (userRole !== 'ROLE_ADMIN') {
     toast.error('Acesso restrito a Magos de Nível Superior!', { icon: '🛑', id: 'erro-admin' });
-    return <Navigate to="/produtos" />; // Joga o penetra de volta pra vitrine
+    return <Navigate to="/produtos" />; // Manda de volta para a vitrine
   }
 
   // Se for ADMIN, deixa passar e renderiza a tela de Admin

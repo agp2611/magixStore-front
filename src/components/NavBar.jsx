@@ -12,12 +12,10 @@ export function Navbar() {
   return (
     <nav className="bg-zinc-950 border-b border-zinc-800 text-gray-200 sticky top-0 z-50 shadow-lg shadow-purple-900/10">
       
-      {/* ✨ ALTERAÇÃO 1: Trocámos max-w-7xl por w-full e adicionámos relative */}
       <div className="w-full px-6 lg:px-12 relative">
         <div className="flex justify-between items-center h-20">
           
           {/* Logo e Home */}
-          {/* ✨ Adicionado z-10 para o logo não perder o clique devido ao centro absoluto */}
           <Link to="/" className="flex items-center gap-2 text-2xl font-bold text-purple-500 hover:text-purple-400 transition-colors z-10">
             <Sparkles className="w-7 h-7" />
             <span>MagixStore</span>
@@ -40,7 +38,6 @@ export function Navbar() {
           </div>
 
           {/* Ícones da Direita (Carrinho e Login) */}
-          {/* ✨ Adicionado z-10 aqui também */}
           <div className="flex items-center gap-6 z-10">
             
             {/* Botão do Carrinho */}
@@ -58,7 +55,7 @@ export function Navbar() {
           {isLoggedIn ? (
             <div className="flex items-center gap-4">
     
-              {/* 🛡️ FEITIÇO DE OCULTAÇÃO: Só renderiza se for ADMIN */}
+              {/* Só renderiza se for ADMIN */}
               {userRole === 'ROLE_ADMIN' && (
                 <Link to="/admin/dashboard" className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors text-sm font-medium bg-purple-900/20 px-3 py-1.5 rounded-lg border border-purple-800/30">
                   <ShieldAlert className="w-4 h-4" />
@@ -66,7 +63,6 @@ export function Navbar() {
                 </Link>
               )}
 
-            {/* ✨ NOME DO USUÁRIO DINÂMICO */}
             <Link to="/perfil" className="flex items-center gap-2 text-zinc-300 hover:text-purple-400 cursor-pointer transition-colors ml-2 border-l border-zinc-800 pl-4">
               <User className="w-5 h-5" />
               <span className="font-medium max-w-[150px] truncate" title={userName || 'Iniciado'}>

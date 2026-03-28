@@ -49,8 +49,8 @@ export function Login() {
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-20">
       <div className="w-full max-w-md bg-zinc-900/50 border border-zinc-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
         
-        <div className="absolute -top-20 -right-20 w-40 h-40 bg-purple-600/20 blur-3xl rounded-full"></div>
-        <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-indigo-600/20 blur-3xl rounded-full"></div>
+        <div className="absolute -top-20 -right-20 w-40 h-40 bg-purple-600/50 blur-3xl rounded-full"></div>
+        <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-indigo-600/50 blur-3xl rounded-full"></div>
 
         <div className="relative z-10">
           <div className="flex flex-col items-center mb-8">

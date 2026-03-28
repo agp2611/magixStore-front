@@ -10,7 +10,7 @@ export function Perfil() {
   const [carregando, setCarregando] = useState(true);
   const navigate = useNavigate();
 
-  // 🛡️ Proteção da Rota
+  // Proteção da Rota
   useEffect(() => {
     if (!isLoggedIn) {
       toast.error("Acesso restrito! Identifique-se primeiro.", { id: 'perfil-trancado' });
@@ -18,7 +18,6 @@ export function Perfil() {
     }
   }, [isLoggedIn, navigate]);
 
-  // 📜 Busca o Histórico de Pedidos no Java
   useEffect(() => {
     const buscarPedidos = async () => {
       if (!userId || !token) return;

@@ -4,7 +4,7 @@ import { Edit, Tag, AlignLeft, DollarSign, Loader2, Sparkles, ArrowLeft, Image a
 import toast from 'react-hot-toast';
 
 export function EditarProduto() {
-  const { id } = useParams(); // Pega o ID da relíquia pela URL
+  const { id } = useParams(); 
   const navigate = useNavigate();
 
   // Estados do formulário
@@ -19,7 +19,6 @@ export function EditarProduto() {
   const [saving, setSaving] = useState(false);
   const [erro, setErro] = useState('');
 
-  // Busca os dados atuais da relíquia assim que a tela abre
   useEffect(() => {
     fetch(`http://localhost:8081/products/${id}`)
       .then(response => {
@@ -27,7 +26,6 @@ export function EditarProduto() {
         return response.json();
       })
       .then(data => {
-        // Preenche os campos com os dados que vieram do banco
         setNome(data.name);
         setDescricao(data.description || '');
         setPreco(data.price);
@@ -55,7 +53,6 @@ export function EditarProduto() {
     }
 
     try {
-      // ATENÇÃO: Aqui usamos PUT e passamos o ID na URL!
       const response = await fetch(`http://localhost:8081/products/${id}`, {
         method: 'PUT',
         headers: {

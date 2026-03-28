@@ -31,7 +31,6 @@ export function DashboardAdmin() {
 
   // Função para Deletar um produto
   const handleDeletar = async (id, nome) => {
-    // Pede uma confirmação para não deletar sem querer
     const confirmacao = window.confirm(`Tem certeza que deseja banir a relíquia "${nome}" para sempre?`);
     if (!confirmacao) return;
 
@@ -50,7 +49,6 @@ export function DashboardAdmin() {
         throw new Error('Erro ao deletar o item do banco de dados.');
       }
 
-      // Se deu certo no Java, a gente remove o item da tela sem precisar dar F5!
       setProdutos(produtos.filter(produto => produto.id !== id));
       toast.success('Relíquia banida com sucesso!');
 
@@ -92,7 +90,7 @@ export function DashboardAdmin() {
         </Link>
       </div>
 
-      {/* ✨ 2. COLE A BARRA DE PESQUISA EXATAMENTE AQUI ✨ */}
+      
       <div className="mb-6 flex justify-start">
         <div className="relative w-full md:w-full">
           <div className="absolute z-10 inset-y-0 left-0 pl-4 flex items-center pointer-events-none">

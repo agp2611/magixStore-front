@@ -4,7 +4,7 @@ import { ShoppingCart, ArrowLeft, Loader2, Sparkles, Package } from 'lucide-reac
 import { CartContext } from '../contexts/CartContext';
 
 export function ProdutoDetalhes() {
-  const { id } = useParams(); // Pega o ID da URL
+  const { id } = useParams();
   const navigate = useNavigate();
   const { adicionarAoCarrinho } = useContext(CartContext);
   const [produto, setProduto] = useState(null);
@@ -13,7 +13,6 @@ export function ProdutoDetalhes() {
   
 
   useEffect(() => {
-    // Busca apenas o produto com este ID específico
     fetch(`http://localhost:8081/products/${id}`)
       .then(response => {
         if (!response.ok) throw new Error('Relíquia não encontrada no grimório.');
