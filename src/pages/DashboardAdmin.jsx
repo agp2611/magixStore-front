@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Trash2, Edit, PlusCircle, ShieldAlert, Loader2, Sparkles, Package } from 'lucide-react';
+import { Trash2, Edit, PlusCircle, ShieldAlert, Loader2, Sparkles, Package, Search } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export function DashboardAdmin() {
   const [produtos, setProdutos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState(null);
+  const [termoBusca, setTermoBusca] = useState('');
+  const produtosFiltrados = produtos.filter(produto => 
+    produto.name.toLowerCase().includes(termoBusca.toLowerCase())
+  );
 
   // Busca todos os produtos ao abrir a tela
   useEffect(() => {
@@ -78,6 +82,7 @@ export function DashboardAdmin() {
           </div>
         </div>
 
+
         <Link 
           to="/admin/novo-produto" 
           className="flex items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:shadow-[0_0_25px_rgba(147,51,234,0.5)]"
@@ -85,6 +90,22 @@ export function DashboardAdmin() {
           <PlusCircle className="w-5 h-5" />
           Nova Relíquia
         </Link>
+      </div>
+
+      {/* ✨ 2. COLE A BARRA DE PESQUISA EXATAMENTE AQUI ✨ */}
+      <div className="mb-6 flex justify-start">
+        <div className="relative w-full md:w-full">
+          <div className="absolute z-10 inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <Search className="h-5 w-5 text-zinc-500" />
+          </div>
+          <input
+            type="text"
+            placeholder="Pesquisar relíquia no conselho..."
+            value={termoBusca}
+            onChange={(e) => setTermoBusca(e.target.value)}
+            className="w-full bg-zinc-900/40 border border-zinc-800 text-zinc-200 rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all placeholder:text-zinc-600 shadow-inner backdrop-blur-sm"
+          />
+        </div>
       </div>
 
       {erro ? (
@@ -104,14 +125,14 @@ export function DashboardAdmin() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-800/50">
-                {produtos.length === 0 ? (
+                {produtosFiltrados.length === 0 ? (
                   <tr>
                     <td colSpan="4" className="p-8 text-center text-zinc-500">
                       O estoque está completamente vazio.
                     </td>
                   </tr>
                 ) : (
-                  produtos.map((produto) => (
+                  produtosFiltrados.map((produto) => (
                     <tr key={produto.id} className="hover:bg-zinc-800/20 transition-colors group">
                       <td className="p-5 flex items-center gap-4">
                         <div className="w-12 h-12 rounded-lg bg-zinc-950 border border-zinc-800 flex items-center justify-center overflow-hidden flex-shrink-0">
