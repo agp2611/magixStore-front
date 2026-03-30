@@ -80,9 +80,17 @@ export function Produtos() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
+      <svg width="0" height="0" className="absolute">
+        <defs>
+          <linearGradient id="roxo-magico" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#c084fc" /> {/* purple-400 */}
+            <stop offset="100%" stopColor="#818cf8" /> {/* indigo-400 */}
+          </linearGradient>
+        </defs>
+      </svg>
       <div className="flex items-center gap-3 mb-10">
-        <Sparkles className="w-8 h-8 text-zinc-100" />
-        <h1 className="text-4xl font-extrabold text-zinc-100">Vitrine Mágica</h1>
+        <Sparkles className="w-8 h-8" style={{ stroke: "url(#roxo-magico)"}} />
+        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-purple-400/80 to-indigo-400 tracking-tight pb-1">Vitrine Mágica</h1>
       </div>
 
       <div className="flex flex-col md:flex-row justify-between items-center w-full mb-8 gap-4">

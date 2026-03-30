@@ -16,7 +16,7 @@ export function Navbar() {
         <div className="flex justify-between items-center h-20">
           
           {/* Logo e Home */}
-          <Link to="/" className="flex items-center gap-2 text-2xl font-bold text-purple-500 hover:text-purple-400 transition-colors z-10">
+          <Link to="/" className="flex items-center gap-2 text-2xl font-bold text-zinc-300 hover:text-purple-400 transition-colors z-10">
             <Sparkles className="w-7 h-7" />
             <span>MagixStore</span>
           </Link>
