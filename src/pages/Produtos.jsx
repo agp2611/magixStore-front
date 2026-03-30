@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Sparkles, Loader2, Search } from 'lucide-react';
+import { ShoppingCart, Sparkles, Loader2, Search, ArrowUpDown } from 'lucide-react';
 import { CartContext } from '../contexts/CartContext';
 
 export function Produtos() {
@@ -9,9 +9,35 @@ export function Produtos() {
   const [erro, setErro] = useState(null);
   const { adicionarAoCarrinho } = useContext(CartContext);
   const [termoBusca, setTermoBusca] = useState('');
-  const produtosFiltrados = produtos.filter(produto => 
-    produto.name.toLowerCase().includes(termoBusca.toLowerCase())
-  );
+  const [ordem, setOrdem] = useState('padrao');
+  const [dropdownAberto, setDropdownAberto] = useState(false);
+  const produtosExibicao = produtos
+    .filter(produto => 
+      produto.name.toLowerCase().includes(termoBusca.toLowerCase())
+    )
+    .sort((a, b) => {
+      const estoqueA = a.stock || a.estoque || a.quantidade || 0;
+      const estoqueB = b.stock || b.estoque || b.quantidade || 0;
+      const precoA = a.price || a.preco || 0;
+      const precoB = b.price || b.preco || 0;
+
+      if (ordem === 'a-z') return a.name.localeCompare(b.name);
+      if (ordem === 'z-a') return b.name.localeCompare(a.name);
+      if (ordem === 'estoque-asc') return estoqueA - estoqueB;
+      if (ordem === 'estoque-desc') return estoqueB - estoqueA;
+      if (ordem === 'preco-asc') return precoA - precoB;
+      if (ordem === 'preco-desc') return precoB - precoA;
+      return 0;
+    });
+      const opcoesOrdenacao = [
+    { id: 'padrao', label: 'Ordem do Grimório' },
+    { id: 'a-z', label: 'Nome: A - Z' },
+    { id: 'z-a', label: 'Nome: Z - A' },
+    { id: 'preco-asc', label: 'Preço: Menor para Maior' },
+    { id: 'preco-desc', label: 'Preço: Maior para Menor' },
+    { id: 'estoque-asc', label: 'Estoque: Menor para Maior' },
+    { id: 'estoque-desc', label: 'Estoque: Maior para Menor' }
+  ];
 
   useEffect(() => {
     fetch('http://localhost:8081/products', {
@@ -55,12 +81,13 @@ export function Produtos() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       <div className="flex items-center gap-3 mb-10">
-        <Sparkles className="w-8 h-8 text-gray-100" />
-        <h1 className="text-4xl font-extrabold text-gray-100 tracking-tight">Vitrine Mágica</h1>
+        <Sparkles className="w-8 h-8 text-zinc-100" />
+        <h1 className="text-4xl font-extrabold text-zinc-100">Vitrine Mágica</h1>
       </div>
 
-      <div className="flex flex-row justify-between items-center w-full mb-8 gap-4">
-        <div className="relative w-full md:w-full">
+      <div className="flex flex-col md:flex-row justify-between items-center w-full mb-8 gap-4">
+        
+        <div className="relative w-full md:w-2/3">
           <div className="absolute z-10 inset-y-0 left-0 pl-4 flex items-center">
             <Search className="h-5 w-5 text-zinc-500" />
           </div>
@@ -69,16 +96,72 @@ export function Produtos() {
             placeholder="Busque por relíquias, artefatos..."
             value={termoBusca}
             onChange={(e) => setTermoBusca(e.target.value)}
-            className="w-full bg-zinc-900/50 border border-zinc-800 text-zinc-200 rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all placeholder:text-zinc-600 shadow-inner backdrop-blur-sm"
+            className="w-full bg-zinc-900/50 border border-zinc-800 hover:border-purple-500/30 text-zinc-200 rounded-xl pl-11 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all placeholder:text-zinc-600 shadow-inner backdrop-blur-sm"
           />
+        </div>
+
+        <div className="hidden md:block w-px h-10 bg-zinc-800/80"></div>
+
+        <div className="relative w-full md:w-2/5 group">
+          
+          <div className="absolute z-10 inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <ArrowUpDown className="h-5 w-5 text-zinc-500 group-focus-within:text-purple-400 transition-colors" />
+          </div>
+          
+          <button
+            onClick={() => setDropdownAberto(!dropdownAberto)}
+            className="w-full flex justify-between items-center bg-zinc-900/50 border border-zinc-800 hover:border-purple-500/30 text-zinc-200 rounded-xl pl-12 pr-5 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all text-left"
+          >
+            <span className="truncate">
+              {opcoesOrdenacao.find(op => op.id === ordem)?.label}
+            </span>
+            <svg 
+              className={`w-4 h-4 text-zinc-500 transition-transform duration-300 ${dropdownAberto ? 'rotate-180 text-purple-400' : ''}`} 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {dropdownAberto && (
+            <>
+              <div 
+                className="fixed inset-0 z-40"
+                onClick={() => setDropdownAberto(false)}
+              ></div>
+              
+              <div className="absolute z-50 w-full mt-2 bg-zinc-950/70 backdrop-blur-xl border border-zinc-800 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.5)] shadow-purple-900/50 overflow-hidden transform origin-top transition-all animate-in fade-in slide-in-from-top-2">
+                <div className="flex flex-col py-1">
+                  {opcoesOrdenacao.map((opcao) => (
+                    <button
+                      key={opcao.id}
+                      onClick={() => {
+                        setOrdem(opcao.id);
+                        setDropdownAberto(false);
+                      }}
+                      className={`px-4 py-3 text-left cursor-pointer transition-all flex items-center ${
+                        ordem === opcao.id
+                          ? 'bg-purple-900/30 text-purple-300 border-l-4 border-purple-500'
+                          : 'text-zinc-300 hover:bg-zinc-950/60 hover:text-purple-300 border-l-4 border-transparent hover:border-purple-500/30'
+                      }`}
+                    >
+                      {opcao.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
-      {produtosFiltrados.length === 0 ? (
+      {produtosExibicao.length === 0 ? (
         <p className="text-zinc-400 text-lg text-center mt-10">O grimório está vazio no momento. Nenhuma relíquia encontrada.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {produtosFiltrados.map((produto) => {
+          {produtosExibicao.map((produto) => {
             const esgotado = produto.stock === 0;
 
             return (

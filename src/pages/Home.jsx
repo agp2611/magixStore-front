@@ -15,7 +15,7 @@ export function Home() {
 
       {/*  CAMADA 3: O Gradiente de Sobreposição  */}
       {/* Isso garante que o texto fique legível e cria um clima mágico escuro */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-b from-zinc-950 via-zinc-950/90 to-purple-950/30" />
+      <div className="absolute inset-0 z-10 bg-linear-to-b from-zinc-950 via-zinc-950/90 to-purple-950/30" />
 
       {/* CAMADA 4: O Seu Conteúdo Real */}
       {/* É fundamental ter o z-20 para ficar por cima de todas as camadas de fundo */}
@@ -23,7 +23,7 @@ export function Home() {
 
       {/* Hero Section (Banner Principal) */}
       <section className="w-full max-w-7xl mx-auto px-4 py-24 flex flex-col items-center text-center">
-        <h1 className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600 mb-6 drop-shadow-md pb-4">
+        <h1 className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-indigo-600 mb-6 drop-shadow-md pb-4">
           Desperte a Sua Magia
         </h1>
         <p className="text-zinc-400 text-lg md:text-xl max-w-2xl mb-10 leading-relaxed">
